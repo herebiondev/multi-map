@@ -22,4 +22,11 @@ struct Location: Identifiable, Hashable {
             longitude: longitude
         )
     }
+    
+    // Because the id value alone is enough to generate a unique hash for this
+    // object, we use this implementation to avoid unnecesary hashing every
+    // property.
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
