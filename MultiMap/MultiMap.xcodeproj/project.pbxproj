@@ -11,6 +11,7 @@
 		EEB3EB6E2823D1FA005A6C31 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB3EB6D2823D1FA005A6C31 /* ContentView.swift */; };
 		EEB3EB702823D1FB005A6C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEB3EB6F2823D1FB005A6C31 /* Assets.xcassets */; };
 		EEB3EB732823D1FB005A6C31 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEB3EB722823D1FB005A6C31 /* Preview Assets.xcassets */; };
+		EEB3EB7B2823D255005A6C31 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB3EB7A2823D255005A6C31 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		EEB3EB6F2823D1FB005A6C31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EEB3EB722823D1FB005A6C31 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EEB3EB742823D1FB005A6C31 /* MultiMap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MultiMap.entitlements; sourceTree = "<group>"; };
+		EEB3EB7A2823D255005A6C31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			children = (
 				EEB3EB6B2823D1FA005A6C31 /* MultiMapApp.swift */,
 				EEB3EB6D2823D1FA005A6C31 /* ContentView.swift */,
+				EEB3EB7A2823D255005A6C31 /* AppDelegate.swift */,
 				EEB3EB6F2823D1FB005A6C31 /* Assets.xcassets */,
 				EEB3EB742823D1FB005A6C31 /* MultiMap.entitlements */,
 				EEB3EB712823D1FB005A6C31 /* Preview Content */,
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEB3EB7B2823D255005A6C31 /* AppDelegate.swift in Sources */,
 				EEB3EB6E2823D1FA005A6C31 /* ContentView.swift in Sources */,
 				EEB3EB6C2823D1FA005A6C31 /* MultiMapApp.swift in Sources */,
 			);
