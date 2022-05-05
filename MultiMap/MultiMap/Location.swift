@@ -10,7 +10,7 @@
 
 import MapKit
 
-struct Location: Hashable {
+struct Location: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let latitude: Double
