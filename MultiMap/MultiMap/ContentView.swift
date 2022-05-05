@@ -10,7 +10,9 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var searchText = ""
+    // Store the user text if the user quits the app without
+    // having completed their current search
+    @AppStorage("searchText") private var searchText = ""
     
     // Default region of the map
     @State private var region = MKCoordinateRegion(
@@ -28,56 +30,83 @@ struct ContentView: View {
     @State private var selectedLocations = Set<Location>()
     
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Search for something...", text: $searchText)
-                    .onSubmit(runSearch)
-                
-                Button("Go", action: runSearch)
+        NavigationView {
+            List(
+                locations,
+                selection: $selectedLocations
+            ) { location in
+                Text(location.name)
+                    .tag(location)
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            delete(location)
+                        }
+                    }
             }
-            .padding([.top, .horizontal])
-            
-            Map(coordinateRegion: $region, annotationItems: locations) { location in
-                MapAnnotation(coordinate: location.coordinate) {
-                    Text(location.name)
-                        .font(.headline)
-                        .padding(5)
-                        .padding(.horizontal, 5)
-                        .background(.black)
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
+            .frame(minWidth: 200)
+            .onDeleteCommand {
+                for location in selectedLocations {
+                    delete(location)
                 }
             }
-        }
-        .onChange(of: selectedLocations) { _ in
-            var visibleMap = MKMapRect.null
             
-            // The 100,000 and 200,000 are there to ensure we don't
-            // focus too tightly on each location, otherwise having just
-            // one location selected would zoom in so tightly that users
-            // would have no idea what they were looking at.
-            for location in selectedLocations {
-                let mapPoint = MKMapPoint(location.coordinate)
-                let pointRect = MKMapRect(
-                    x: mapPoint.x - 100_000,
-                    y: mapPoint.y - 100_000,
-                    width: 200_000,
-                    height: 200_000
-                )
+            // Map
+            VStack {
+                HStack {
+                    TextField("Search for something...", text: $searchText)
+                        .onSubmit(runSearch)
+                    
+                    Button("Go", action: runSearch)
+                }
+                .padding([.top, .horizontal])
                 
-                visibleMap = visibleMap.union(pointRect)
+                Map(coordinateRegion: $region, annotationItems: locations) { location in
+                    MapAnnotation(coordinate: location.coordinate) {
+                        Text(location.name)
+                            .font(.headline)
+                            .padding(5)
+                            .padding(.horizontal, 5)
+                            .background(.black)
+                            .foregroundColor(.white)
+                            .clipShape(Capsule())
+                    }
+                }
             }
-            
-            var newRegion = MKCoordinateRegion(visibleMap)
-            
-            // Add some extra padding around our locations
-            newRegion.span.latitudeDelta *= 1.5
-            newRegion.span.longitudeDelta *= 1.5
-            
-            withAnimation {
-                region = newRegion
-            }
+            .onChange(of: selectedLocations) { _ in
+                var visibleMap = MKMapRect.null
+                
+                // The 100,000 and 200,000 are there to ensure we don't
+                // focus too tightly on each location, otherwise having just
+                // one location selected would zoom in so tightly that users
+                // would have no idea what they were looking at.
+                for location in selectedLocations {
+                    let mapPoint = MKMapPoint(location.coordinate)
+                    let pointRect = MKMapRect(
+                        x: mapPoint.x - 100_000,
+                        y: mapPoint.y - 100_000,
+                        width: 200_000,
+                        height: 200_000
+                    )
+                    
+                    visibleMap = visibleMap.union(pointRect)
+                }
+                
+                var newRegion = MKCoordinateRegion(visibleMap)
+                
+                // Add some extra padding around our locations
+                newRegion.span.latitudeDelta *= 1.5
+                newRegion.span.longitudeDelta *= 1.5
+                
+                withAnimation {
+                    region = newRegion
+                }
         }
+        }
+    }
+    
+    func delete(_ location: Location) {
+        guard let index = locations.firstIndex(of: location) else { return }
+        locations.remove(at: index)
     }
     
     func runSearch() {
@@ -110,6 +139,7 @@ struct ContentView: View {
             withAnimation {
                 locations.append(newLocation)
                 selectedLocations = [newLocation]
+                searchText = ""
             }
         }
     }
